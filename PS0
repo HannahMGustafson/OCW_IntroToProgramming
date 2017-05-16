@@ -1,2 +1,6 @@
+import math
 x = input("Enter a number for x: ")
-print x
+y = input("Enter a number for y: ")
+val = x**y
+print"X**y = ", val
+print "log(x)", math.log(x)
