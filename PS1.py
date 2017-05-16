@@ -42,7 +42,7 @@
 #         annual_salary *= (1+semi_annual_raise)
 # print "Number of months: ", mon
 
-## PS1c
+## PS1c: Completed
 def months_to_save(annual_salary, portion_saved):
     current_savings = 0
     semi_annual_raise = 0.07
