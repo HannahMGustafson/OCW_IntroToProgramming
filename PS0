@@ -1,0 +1,2 @@
+x = input("Enter a number for x: ")
+print x
