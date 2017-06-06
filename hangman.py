@@ -4,6 +4,8 @@
 # Time spent: 3 Hours
 
 
+import random
+import string
 
 WORDLIST_FILENAME = "words.txt"
 
