@@ -3,9 +3,9 @@
 # The 6.0001 Word Game
 # Created by: Kevin Luu <luuk> and Jenna Wiens <jwiens>
 #
-# Name          : <your name>
-# Collaborators : <your collaborators>
-# Time spent    : <total time>
+# Name          : Hannah Gustafson
+# Collaborators : Google
+# Time spent    : 3 hours
 
 import math
 import random
@@ -155,8 +155,8 @@ def deal_hand(n):
     hand['*'] = 1
     return hand
 
-my_hand = deal_hand(7)
-display_hand(my_hand)
+# my_hand = deal_hand(7)
+# display_hand(my_hand)
 #
 # Problem #2: Update a hand by removing letters
 #
@@ -230,8 +230,11 @@ def calculate_handlen(hand):
     hand: dictionary (string-> int)
     returns: integer
     """
-    
-    pass  # TO DO... Remove this line when you implement this function
+    length = 0
+    for entry in hand.itervalues():
+        length += entry
+    return length
+
 
 def play_hand(hand, word_list):
 
@@ -268,36 +271,31 @@ def play_hand(hand, word_list):
     # Keep track of the total score
     score = 0
     # As long as there are still letters left in the hand:
-    
+    while calculate_handlen(hand) > 0:
         # Display the hand
-        display_hand(hand)
+        # display_hand(hand)
         # Ask user for input
-        raw_input('What word do you chose to play?  ')
+        word = raw_input('What word do you chose to play or enter !! to quit?  ')
+        print word
         # If the input is two exclamation points:
-        
-            # End the game (break out of the loop)
-
-            
-        # Otherwise (the input is not two exclamation points):
-
-            # If the word is valid:
-
-                # Tell the user how many points the word earned,
-                # and the updated total score
-
-            # Otherwise (the word is not valid):
-                # Reject invalid word (print a message)
-                
-            # update the user's hand by removing the letters of their inputted word
-            
-
-    # Game is over (user entered '!!' or ran out of letters),
-    # so tell user the total score
-
-    # Return the total score as result of function
+        if word == '!!':
+            break
+        # End the game (break out of the loop)
+        else:
+            if is_valid_word(word,hand,word_list):
+                curr_score = get_word_score(word, calculate_handlen(hand))
+                score += curr_score
+                print 'You earned ' + str(curr_score) + ' points for that word'
+                print 'Your total score is ' + str(score)
+                hand = update_hand(hand,word)
+            else:
+                print 'That word is not valid'
+    print 'Game over! Thanks for playing...'
+    print 'Your score was ' + str(score) + '!'
+    return score
 
 
-
+# play_hand({'a': 1, 'p': 2, 'l': 1, 'e': 2, 'h':1}, load_words())
 #
 # Problem #6: Playing a game
 # 
@@ -329,9 +327,15 @@ def substitute_hand(hand, letter):
     letter: string
     returns: dictionary (string -> int)
     """
-    
-    pass  # TO DO... Remove this line when you implement this function
-       
+    # Remove letter from hand dictionary
+    x = letter
+    # Create a new random letter
+    while hand.get(x,0) != 0:
+        x = random.choice(CONSONANTS+VOWELS)
+    hand[x] = hand.get(x, 0) + 1
+    hand[letter] -= 1
+    return hand
+
     
 def play_game(word_list):
     """
@@ -364,7 +368,33 @@ def play_game(word_list):
     word_list: list of lowercase strings
     """
     
-    print("play_game not implemented.") # TO DO... Remove this line when you implement this function
+    hand_num = raw_input('How many hands would you like to play? ')
+    hand_num = int(hand_num)
+    HAND_SIZE = 10
+
+    score = 0
+    replay = 1
+    while hand_num > 0:
+        hand = deal_hand(HAND_SIZE)
+        display_hand(hand)
+        hand_num -= 1
+        sub = raw_input('Would you like to substitute a letter (yes or no)? ')
+        if sub.lower() == 'yes':
+            sublet = raw_input('What letter would you like to substitute? ')
+            hand = substitute_hand(hand, sublet)
+            print 'Your new hand is as follows: '
+            display_hand(hand)
+        scoretemp = play_hand(hand, word_list)
+        if replay == 1:
+            replay = raw_input('Would you like to replay that hand (yes or no, one replay per game)? ')
+            if replay.lower() == 'yes':
+                replay = 0
+                scoretemp = play_hand(hand, word_list)
+        score = score + scoretemp
+    print 'Your final score was ' + str(score)
+    return score
+
+
     
 
 
